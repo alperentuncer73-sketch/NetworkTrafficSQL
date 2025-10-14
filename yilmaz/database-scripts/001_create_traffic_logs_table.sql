@@ -1,7 +1,4 @@
--- =================================================================
---  DATABASE CREATION
--- =================================================================
-
+-- == DATABASE CREATION == --
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'TrafficLogDB')
 BEGIN
     CREATE DATABASE TrafficLogDB;
@@ -11,48 +8,45 @@ GO
 USE TrafficLogDB;
 GO
 
--- =================================================================
---  TABLE CREATION: TrafficLogs
--- =================================================================
-
+-- == TABLE CREATION: TrafficLogs == --
 DROP TABLE IF EXISTS TrafficLogs;
 GO
 
 CREATE TABLE TrafficLogs (
 
-    -- Core Identity & Timestamp Columns
+    -- Core Identity & Timestamp Columns --
     LogID BIGINT PRIMARY KEY IDENTITY(1,1), 
     EventTimestamp DATETIME2(7) NOT NULL DEFAULT GETDATE(), 
 
-    -- Foreign Key Placeholders
+    -- Foreign Key Placeholders --
     DeviceID INT NULL, 
     UserID INT NULL,
 
-    -- Network Information
+    -- Network Information --
     SourceIPAddress VARCHAR(45) NOT NULL,
     DestinationIPAddress VARCHAR(45) NOT NULL,
     DestinationPort INT NOT NULL, 
     Protocol VARCHAR(20) NOT NULL,
 
-    -- Data Measurement
+    -- Data Measurement --
     DataTransferredMB DECIMAL(18, 4) NULL,
     PacketCount BIGINT NULL, 
     AveragePacketSizeKB INT NULL,
     
-    -- Analysis and Status Columns
+    -- Analysis and Status Columns --
     Status VARCHAR(50) NOT NULL,
     SecurityStatus VARCHAR(50) NULL,
     RiskLevel VARCHAR(20) NULL,
     LogType VARCHAR(50) NULL, 
     ApplicationName VARCHAR(50) NULL,
     
-    -- Geolocation
+    -- Geolocation --
     SourceCountry VARCHAR(50) NULL, 
     DestinationCountry VARCHAR(50) NULL, 
 
     Notes NVARCHAR(255) NULL,
 
-    -- == DATA INTEGRITY CONSTRAINTS ==
+    -- == DATA INTEGRITY CONSTRAINTS == --
     CONSTRAINT CK_TrafficLogs_PortNumber CHECK (DestinationPort BETWEEN 0 AND 65535),
     CONSTRAINT CK_TrafficLogs_Protocol CHECK (Protocol IN ('TCP', 'UDP', 'HTTP', 'HTTPS', 'ICMP', 'DNS')), 
     CONSTRAINT CK_TrafficLogs_DataTransferred CHECK (DataTransferredMB >= 0),
@@ -61,10 +55,10 @@ CREATE TABLE TrafficLogs (
 );
 GO
 
--- == PERFORMANCE INDEXES ==
+-- == PERFORMANCE INDEXES == --
 CREATE NONCLUSTERED INDEX IX_TrafficLogs_SourceIPAddress ON TrafficLogs(SourceIPAddress);
 CREATE NONCLUSTERED INDEX IX_TrafficLogs_EventTimestamp ON TrafficLogs(EventTimestamp);
 GO
 
-PRINT 'Phase 1 (TrafficLogs Table Setup) has been completed successfully.';
+PRINT 'TrafficLogs Table Setup has been completed';
 GO
