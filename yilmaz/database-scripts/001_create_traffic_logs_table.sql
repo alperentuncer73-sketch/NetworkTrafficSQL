@@ -14,33 +14,27 @@ GO
 
 CREATE TABLE TrafficLogs (
 
-    -- Core Identity & Timestamp Columns --
-    LogID BIGINT PRIMARY KEY IDENTITY(1,1), 
+    LogID INT PRIMARY KEY IDENTITY(1,1), 
     EventTimestamp DATETIME2(7) NOT NULL DEFAULT GETDATE(), 
 
-    -- Foreign Key Placeholders --
     DeviceID INT NULL, 
     UserID INT NULL,
 
-    -- Network Information --
     SourceIPAddress VARCHAR(45) NOT NULL,
     DestinationIPAddress VARCHAR(45) NOT NULL,
     DestinationPort INT NOT NULL, 
     Protocol VARCHAR(20) NOT NULL,
 
-    -- Data Measurement --
     DataTransferredMB DECIMAL(18, 4) NULL,
-    PacketCount BIGINT NULL, 
+    PacketCount INT NULL, 
     AveragePacketSizeKB INT NULL,
     
-    -- Analysis and Status Columns --
     Status VARCHAR(50) NOT NULL,
     SecurityStatus VARCHAR(50) NULL,
     RiskLevel VARCHAR(20) NULL,
     LogType VARCHAR(50) NULL, 
     ApplicationName VARCHAR(50) NULL,
-    
-    -- Geolocation --
+
     SourceCountry VARCHAR(50) NULL, 
     DestinationCountry VARCHAR(50) NULL, 
 
