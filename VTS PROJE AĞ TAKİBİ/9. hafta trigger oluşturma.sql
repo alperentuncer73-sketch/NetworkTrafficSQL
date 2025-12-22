@@ -1,7 +1,7 @@
 USE [Ag takibi proje];
 GO
 
--- Varsa eski trigger'˝ temizle
+-- Varsa eski triggerƒ± temizle
 DROP TRIGGER IF EXISTS trg_TrafficAnomalyDetector;
 GO
 
@@ -16,7 +16,7 @@ BEGIN
     DECLARE @LimitHigh FLOAT = 1000;    
     DECLARE @LimitCritical FLOAT = 2000;   
 
-    -- SecurityAlerts tablosunun s¸tunlar˝na gˆre e˛le˛tirme yap˝yoruz:
+    -- SecurityAlerts tablosunun s√ºtunlarƒ±na g√∂re e≈üle≈ütirme yapƒ±yoruz:
     INSERT INTO SecurityAlerts (
         AlertTimestamp, 
         Severity, 
@@ -31,12 +31,13 @@ BEGIN
             WHEN i.DataTransferredMB >= @LimitCritical THEN 'Critical' -- Severity 
             ELSE 'High'                                     -- Severity
         END,
-        'trafik dalgalanmas˝',                                    -- AlertType (Sabit bir t¸r ad˝ verdik)
+        'trafik dalgalanmas√Ω',                                    -- AlertType (Sabit bir t√ºr adƒ± verdik)
         i.SourceIPAddress,                                  -- SourceDeviceIP (Logdan gelen IP)
-        i.DataTransferredMB,                                -- TrafficRateMbps (Veri miktar˝)
+        i.DataTransferredMB,                                -- TrafficRateMbps (Veri miktarƒ±)
         'Anormal trafik tespiti: ' + CAST(i.DataTransferredMB AS VARCHAR) + ' MB veri transfer edildi.' -- DetailDescription
     FROM 
         inserted i
     WHERE 
-        i.DataTransferredMB >= @LimitHigh; -- Sadece 1000 MB ¸st¸n¸ yakala
+        i.DataTransferredMB >= @LimitHigh; -- Sadece 1000 MB √ºst√ºn√º yakala
 END;
+
