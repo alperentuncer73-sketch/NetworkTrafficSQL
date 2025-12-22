@@ -4,7 +4,7 @@ GO
 DECLARE @xml NVARCHAR(MAX);
 DECLARE @body NVARCHAR(MAX);
 
--- veriyi HTML tablo satırlarına çevirme (XML PATH yöntemi)
+-- veriyi HTML tablo satÄ±rlarÄ±na Ã§evirme (XML PATH yÃ¶ntemi)
 SET @xml = CAST(( 
     SELECT 
         AlertID AS 'td', '',
@@ -13,12 +13,12 @@ SET @xml = CAST((
         TrafficRateMbps AS 'td', '',
         DetailDescription AS 'td'
     FROM SecurityAlerts
-    WHERE AlertTimestamp > DATEADD(DAY, -7, GETDATE()) -- Son 7 gün
+    WHERE AlertTimestamp > DATEADD(DAY, -7, GETDATE()) -- Son 7 gÃ¼n
     ORDER BY AlertID DESC
     FOR XML PATH('tr'), ELEMENTS 
 ) AS NVARCHAR(MAX));
 
--- 2. HTML iskeletini oluşturma
+-- 2. HTML iskeletini oluÃ¾turma
 SET @body = 
     '<html>
     <head>
@@ -30,37 +30,38 @@ SET @body =
         </style>
     </head>
     <body>
-        <h2>?? Haftalık Ağ Güvenlik Raporu</h2>
-        <p>Aşağıda sistem tarafından tespit edilen kritik trafik uyarıları listelenmiştir:</p>
+        <h2>?? HaftalÃ½k AÃ° GÃ¼venlik Raporu</h2>
+        <p>AÃ¾aÃ°Ã½da sistem tarafÃ½ndan tespit edilen kritik trafik uyarÃ½larÃ½ listelenmiÃ¾tir:</p>
         <table>
             <tr>
                 <th>Alarm ID</th>
                 <th>Seviye</th>
                 <th>Kaynak IP</th>
                 <th>Trafik (MB)</th>
-                <th>Açıklama</th>
+                <th>AÃ§Ã½klama</th>
             </tr>' 
             + @xml + 
         '</table>
-        <p><i>Bu mesaj SQL Server Otomasyon Sistemi tarafından gönderilmiştir.</i></p>
+        <p><i>Bu mesaj SQL Server Otomasyon Sistemi tarafÃ½ndan gÃ¶nderilmiÃ¾tir.</i></p>
     </body>
     </html>';
 
--- 3. Maili Gönder (sp_send_dbmail)
---  @recipients kısmına kendi mailimizi yazarak test edebiliriz
+-- 3. Maili GÃ¶nder (sp_send_dbmail)
+--  @recipients kÄ±smÄ±na kendi mailimizi yazarak test edebiliriz
 EXEC msdb.dbo.sp_send_dbmail
     @profile_name = 'AgTakip_Mail_Profili',
     @recipients = 'yonetici@sirket.com', 
-    @subject = '?? Kritik Ağ Raporu - Otomatik Bildirim',
+    @subject = '?? Kritik AÃ° Raporu - Otomatik Bildirim',
     @body = @body,
     @body_format = 'HTML';
 
-PRINT 'Rapor oluşturuldu ve mail kuyruğuna eklendi!';
+PRINT 'Rapor oluÃ¾turuldu ve mail kuyruÃ°una eklendi!';
 
 SELECT 
     sent_date,
     recipients,
     subject,
-    sent_status -- Burası 'sent' veya 'unsent' yazar
+    sent_status -- BurasÃ½ 'sent' veya 'unsent' yazar
 FROM msdb.dbo.sysmail_mailitems
+
 ORDER BY sent_date DESC;
