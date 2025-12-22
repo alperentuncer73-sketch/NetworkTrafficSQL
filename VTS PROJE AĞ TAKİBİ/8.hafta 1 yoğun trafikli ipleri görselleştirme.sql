@@ -1,9 +1,9 @@
 USE [Ag takibi proje];
 GO
 
-SELECT TOP 10 -- En yoðun 10 IP yeterlidir
-    SourceIPAddress AS IP_Adresi,           -- X Ekseni Olacak
-    SUM(DataTransferredMB) AS Toplam_Veri_MB -- Y Ekseni Olacak
+SELECT TOP 10 -- En yoÄŸun 10 IP yeterlidir
+    SourceIPAddress AS IP_Adresi,           -- X ekseni 
+    SUM(DataTransferredMB) AS Toplam_Veri_MB -- Y ekseni 
 FROM 
     TrafficLogs
 GROUP BY 
@@ -20,4 +20,5 @@ FROM
 GROUP BY 
     DestinationIPAddress
 ORDER BY 
+
     Toplam_Veri_MB DESC;
