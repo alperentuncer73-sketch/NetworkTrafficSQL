@@ -1,17 +1,17 @@
 USE master;
 GO
---sp_send_dbmail prosedürünü kullanarak veritabanındaki kritik uyarıları 
--- otomatik olarak HTML formatına çeviren ve yöneticiye mail atan sistem prototipini oluşturucaz
--- 1. gelişmiş ayarları göster
+--sp_send_dbmail prosedÃ¼rÃ¼nÃ¼ kullanarak veritabanÄ±ndaki kritik uyarÄ±larÄ± 
+-- otomatik olarak HTML formatÄ±na Ã§eviren ve yÃ¶neticiye mail atan sistem prototipini oluÅŸturucaz
+-- 1. geliÅŸmiÃ¾ ayarlarÄ± gÃ¶ster
 sp_configure 'show advanced options', 1;
 RECONFIGURE;
 
--- 2. Database Mail özelliğini aç
+-- 2. Database Mail Ã¶zelliÃ°ini aÃ§
 sp_configure 'Database Mail XPs', 1;
 RECONFIGURE;
 
-PRINT 'Database Mail özelliği başarıyla aktif edildi!';
--- Eğer daha önce oluşturmuşsak hata vermemesi için temizlik
+PRINT 'Database Mail Ã¶zelliÃ°i baÃ¾arÃ½yla aktif edildi!';
+-- EÃ°er daha Ã¶nce oluÃ¾turmuÅŸsak hata vermemesi iÃ§in temizlik
 IF EXISTS (SELECT * FROM msdb.dbo.sysmail_profile WHERE name = 'AgTakip_Mail_Profili')
 BEGIN
     EXEC msdb.dbo.sysmail_delete_profile_sp @profile_name = 'AgTakip_Mail_Profili';
@@ -23,26 +23,27 @@ BEGIN
 END
 GO
 
--- 1. mail hesabı oluşturma 
+-- 1. mail hesabÄ± oluÅŸturma 
 EXEC msdb.dbo.sysmail_add_account_sp
     @account_name = 'AgTakip_Gmail_Hesabi',
-    @email_address = 'umut@gmail.com', -- Gönderici adresi
-    @display_name = 'Ağ Güvenlik Sistemi',
+    @email_address = 'umut@gmail.com', -- GÃ¶nderici adresi
+    @display_name = 'AÃ° GÃ¼venlik Sistemi',
     @mailserver_name = 'smtp.gmail.com',
     @port = 587,
     @enable_ssl = 1,
     @username = 'umut@gmail.com',
-    @password = 'xxyyzzaabbcc'; -- Gmail Uygulama Şifresi 
+    @password = 'xxyyzzaabbcc'; -- Gmail Uygulama Ãifresi 
 
--- 2. profil oluşturma
+-- 2. profil oluÃ¾turma
 EXEC msdb.dbo.sysmail_add_profile_sp
     @profile_name = 'AgTakip_Mail_Profili',
-    @description = 'Ağ takibi rapor gönderim profili';
+    @description = 'AÃ° takibi rapor gÃ¶nderim profili';
 
--- 3. hesabı profile ekleme
+-- 3. hesabÃ½ profile ekleme
 EXEC msdb.dbo.sysmail_add_profileaccount_sp
     @profile_name = 'AgTakip_Mail_Profili',
     @account_name = 'AgTakip_Gmail_Hesabi',
     @sequence_number = 1;
 
-PRINT 'Mail profili ve hesap ayarları yapıldı.';
+PRINT 'Mail profili ve hesap ayarlarÃ½ yapÃ½ldÃ½.';
+
