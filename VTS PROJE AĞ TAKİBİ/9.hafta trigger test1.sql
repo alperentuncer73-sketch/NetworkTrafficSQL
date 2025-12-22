@@ -2,7 +2,7 @@ USE [Ag takibi proje];
 GO
 
 
--- Sisteme 3500 MB'lık (Kritik Seviye) bir veri girişi yapıyoruz
+-- Sisteme 3500 MB'lÄ±k (Kritik Seviye) bir veri giriÅŸi yapÄ±yoruz
 INSERT INTO TrafficLogs (
     DeviceID, UserID, SourceIPAddress, DestinationIPAddress, 
     DestinationPort, ProtocolID, DataTransferredMB, PacketCount, Status, EventTimestamp
@@ -14,7 +14,7 @@ VALUES (
 
 
 
--- triggerın çalışıp kayıt oluşturup oluşturmadığını test edelim
+-- triggerÃ½n Ã§alÄ±ÅŸÄ±p kayÄ±t oluÅŸturup oluÅŸturmadÄ±ÄŸÄ±nÄ± test edelim
 SELECT 
     AlertTimestamp, 
     Severity, 
@@ -24,4 +24,5 @@ SELECT
 FROM 
     SecurityAlerts 
 ORDER BY 
+
     AlertID DESC;
