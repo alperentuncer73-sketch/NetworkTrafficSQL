@@ -2,10 +2,10 @@ USE [Ag takibi proje];
 GO
 
 
--- 1. Her cihaza ait toplam trafik miktarýný bulma
--- GROUP BY ile cihaz bazlý gruplama yapýcaz
-------------------------------------------------------
-PRINT ' Analiz 1: Cihaz bazlý trafik özeti ';
+-- 1. Her cihaza ait toplam trafik miktarÄ±nÄ± bulma
+-- GROUP BY ile cihaz bazlÄ± gruplama yapÃ½caz
+
+PRINT ' Analiz 1: Cihaz bazlÃ½ trafik Ã¶zeti ';
 
 SELECT 
     D.DeviceIP,
@@ -25,16 +25,16 @@ ORDER BY
     Toplam_Trafik_MB DESC;
 GO
 
--- 2. kullanýcýlara göre trafik analizi yapma
--- Hangi departman veya kiþinin aðý yorduðunu bulabilme
+-- 2. kullanÄ±cÄ±lara gÃ¶re trafik analizi yapma
+-- Hangi departman veya kiÅŸinin aÄŸÄ± yorduÄŸunu bulabilme
 
-PRINT ' Analiz 2: Kullanýcý performans raporu ';
+PRINT ' Analiz 2: KullanÃ½cÃ½ performans raporu ';
 
 SELECT 
     U.FirstName + ' ' + U.LastName AS AdSoyad, 
     U.Department AS Departman,
     SUM(T.DataTransferredMB) AS Toplam_Kullanim_MB,
-    AVG(T.DataTransferredMB) AS Ortalama_Islem_Boyutu_MB -- Ortalama iþlem hacmi
+    AVG(T.DataTransferredMB) AS Ortalama_Islem_Boyutu_MB -- Ortalama iÅŸlem hacmi
 FROM 
     TrafficLogs AS T
 JOIN 
@@ -46,13 +46,13 @@ ORDER BY
 GO
 
 
--- 3. günlük ortalama trafik raporu
---  tarihe göre gruplama
-------------------------------------------------------
-PRINT ' Analiz 3: günlük trafik ';
+-- 3. gÃ¼nlÃ¼k ortalama trafik raporu
+--  tarihe gÃ¶re gruplama
+
+PRINT ' Analiz 3: gÃ¼nlÃ¼k trafik ';
 
 SELECT 
-    CAST(T.EventTimestamp AS DATE) AS Gun, -- Saati atýp sadece tarihi aldýk
+    CAST(T.EventTimestamp AS DATE) AS Gun, -- Saati atÄ±p sadece tarihi aldÄ±k
     COUNT(T.LogID) AS Gunluk_Islem_Sayisi,
     SUM(T.DataTransferredMB) AS Gunluk_Toplam_Trafik_MB
 FROM 
@@ -64,9 +64,9 @@ ORDER BY
 GO
 
 
--- 4. en yüksek ve en düþük trafik deðerlerini bulma
+-- 4. en yÃ¼ksek ve en dÃ¼ÅŸÃ¼k trafik deÄŸerlerini bulma
 -- Sistemdeki anormallikleri tespit edebiliriz
-------------------------------------------------------
+
 PRINT ' Analiz 4: min-max analizi';
 
 SELECT 
@@ -76,4 +76,5 @@ SELECT
     SUM(DataTransferredMB) AS Sistemin_Toplam_Hacmi_MB
 FROM 
     TrafficLogs;
+
 GO
