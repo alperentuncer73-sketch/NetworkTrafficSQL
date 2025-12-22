@@ -2,14 +2,14 @@ USE [Ag takibi proje];
 GO
 
 
---  Protokol bazýnda toplam trafik miktarýný hesaplama
--- (JOIN kullanarak ID'leri isme çeviriyoruz)
+--  Protokol bazÄ±nda toplam trafik miktarÄ±nÄ± hesaplama
+-- (JOIN kullanarak ID'leri isme Ã§eviriyoruz)
 
-PRINT 'Rapor 1: Protokol Bazlý Toplam Trafik ';
+PRINT 'Rapor 1: Protokol BazlÃ½ Toplam Trafik ';
 
 SELECT
-    P.ProtocolName AS Protokol,               -- Ýsim TrafficProtocols'dan gelir
-    COUNT(T.LogID) AS Baglanti_Sayisi,        -- Kaç kez kullanýlmýþ?
+    P.ProtocolName AS Protokol,               -- isim TrafficProtocols'dan gelir
+    COUNT(T.LogID) AS Baglanti_Sayisi,        -- KaÃ§ kez kullanÄ±lmÄ±ÅŸ?
     SUM(T.DataTransferredMB) AS Toplam_Trafik_MB -- Toplam veri boyutu
 FROM 
     TrafficLogs AS T
@@ -22,10 +22,10 @@ ORDER BY
 GO
 
 
---  En çok kullanýlan protokolü bulucaz
--- (TOP 1 ile þampiyonu seçiyoruz)
+--  En Ã§ok kullanÄ±lan protokolÃ¼ bulucaz
+-- (TOP 1 ile Ã¾ampiyonu seÃ§iyoruz)
 
-PRINT ' Rapor 2: En Çok Trafik Harcayan Protokol (Þampiyon) ';
+PRINT ' Rapor 2: En Ã‡ok Trafik Harcayan Protokol (Ãžampiyon) ';
 
 SELECT TOP 1
     P.ProtocolName AS Protokol,
@@ -40,15 +40,15 @@ ORDER BY
     Toplam_Trafik_MB DESC;
 GO
 
--- 3. Protokollere göre ortalama paket boyutunu hesapla
+-- 3. Protokollere gÃ¶re ortalama paket boyutunu hesapla
 -- (AVG fonksiyonu ile analiz)
 
-PRINT ' Rapor 3: Protokol Performans Ortalamalarý ';
+PRINT ' Rapor 3: Protokol Performans OrtalamalarÃ½ ';
 
 SELECT
     P.ProtocolName AS Protokol,
-    AVG(T.DataTransferredMB) AS Ortalama_Veri_MB, -- Baðlantý baþýna ortalama boyut
-    AVG(T.PacketCount) AS Ortalama_Paket_Sayisi   -- Baðlantý baþýna ortalama paket
+    AVG(T.DataTransferredMB) AS Ortalama_Veri_MB, -- BaÄŸlantÄ± baÅŸÄ±na ortalama boyut
+    AVG(T.PacketCount) AS Ortalama_Paket_Sayisi   -- BaÄŸlantÄ± baÅŸÄ±na ortalama paket
 FROM 
     TrafficLogs AS T
 JOIN 
@@ -58,17 +58,17 @@ GROUP BY
 GO
 
 
--- Filtreleme örneði TCP kayýtlarý için bakalým
+-- Filtreleme Ã¶rneÄŸi TCP kayÄ±tlarÄ± iÃ§in bakalÄ±m
 
 
-PRINT ' Rapor 4: Sadece TCP Protokolüne Ait Loglar ';
+PRINT ' Rapor 4: Sadece TCP ProtokolÃ¼ne Ait Loglar ';
 
 SELECT 
     T.LogID,
     T.EventTimestamp,
     T.SourceIPAddress,
     T.DestinationIPAddress,
-    P.ProtocolName,    -- 'TCP' olduðunu buradan görüyoruz
+    P.ProtocolName,    -- 'TCP' olduÃ°unu buradan gÃ¶rÃ¼yoruz
     T.Status
 FROM 
     TrafficLogs AS T
@@ -78,4 +78,5 @@ WHERE
     P.ProtocolName = 'TCP' 
 ORDER BY 
     T.EventTimestamp DESC;
+
 GO
