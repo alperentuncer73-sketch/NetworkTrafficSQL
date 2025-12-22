@@ -1,7 +1,7 @@
-PRINT ' TEST 1: Analist Kullanıcısı ';
-EXECUTE AS USER = 'Test_Analist'; -- Analist kılığına gir
+PRINT ' TEST 1: Analist KullanÃ½cÃ½sÃ½ ';
+EXECUTE AS USER = 'Test_Analist'; -- Analist kÄ±lÄ±ÄŸÄ±na gir
 
--- 1. okuma testi (başarılı olmalı)
+-- 1. okuma testi (baÅŸarÄ±lÄ± olmalÄ±)
 SELECT TOP 5 * FROM TrafficLogs; 
 
 -- 2. silme Testi (hata vermeli)
@@ -9,35 +9,36 @@ BEGIN TRY
     DELETE FROM TrafficLogs WHERE LogID = 1;
 END TRY
 BEGIN CATCH
-    PRINT 'BAŞARILI: Analist silme yapamadı. Hata mesajı: ' + ERROR_MESSAGE();
+    PRINT 'BAÃARILI: Analist silme yapamadÃ½. Hata mesajÃ½: ' + ERROR_MESSAGE();
 END CATCH
 
-REVERT; -- Kendi yetkine geri dön
+REVERT; -- Kendi yetkine geri dÃ¶n
 
-PRINT ' TEST 2: viewer kullanıcısı ';
-EXECUTE AS USER = 'Test_Viewer'; -- viewer kılığına gir
+PRINT ' TEST 2: viewer kullanÃ½cÃ½sÃ½ ';
+EXECUTE AS USER = 'Test_Viewer'; -- viewer kÄ±lÄ±ÄŸÄ±na gir
 
--- 1. İzinli Tablo Testi (Başarılı olmalı)
+-- 1. izinli tablo testi (BaÅŸarÄ±lÄ± olmalÄ±)
 SELECT TOP 5 * FROM SecurityAlerts;
 
--- 2. Yasaklı Tablo Testi (HATA VERMELİ!)
+-- 2. YasaklÃ½ Tablo Testi (HATA VERMELÃ!)
 BEGIN TRY
     SELECT TOP 5 * FROM TrafficLogs;
 END TRY
 BEGIN CATCH
-    PRINT 'BAŞARILI: viewer yasaklı tabloyu göremedi. Hata mesajı: ' + ERROR_MESSAGE();
+    PRINT 'BAÃARILI: viewer yasaklÃ½ tabloyu gÃ¶remedi. Hata mesajÃ½: ' + ERROR_MESSAGE();
 END CATCH
 
 REVERT; 
-PRINT 'TEST 3: Admin Kullanıcısı ';
-EXECUTE AS USER = 'Test_Admin'; -- admin kılığına gir
+PRINT 'TEST 3: Admin KullanÃ½cÃ½sÃ½ ';
+EXECUTE AS USER = 'Test_Admin'; 
 
--- 1. Okuma Testi (Başarılı olmalı)
+
 SELECT COUNT(*) AS Toplam_Log FROM TrafficLogs;
 
--- 2. silme testi (başarılı olmalı)
--- Test için olmayan bir ID silelim ki veri kaybı olmasın ama yetkiyi görelim
+
+-- Test iÃ§in olmayan bir ID silelim ki veri kaybÄ± olmasÃ½n ama yetkiyi gÃ¶relim
 DELETE FROM TrafficLogs WHERE LogID = -1; 
-PRINT 'admin silme işlemini başarıyla denedi (Hata almadı).';
+PRINT 'admin silme iÃ¾lemini baÃ¾arÃ½yla denedi (Hata almadÃ½).';
+
 
 REVERT;
