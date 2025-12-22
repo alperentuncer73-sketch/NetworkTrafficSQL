@@ -17,6 +17,7 @@ SELECT
     T.DestinationIPAddress AS Gidilen_Hedef_IP,
     SUM(T.DataTransferredMB) AS Oraya_Gonderilen_Toplam_MB
 FROM TrafficLogs T
-JOIN Users U ON T.SourceIPAddress = U.AssignedIP -- Çalýþaný bulmak için Kaynak IPye bakýyoruz
-WHERE T.DestinationIPAddress = '157.240.1.1' -- Hedef IP (turuncu sütun)
+JOIN Users U ON T.SourceIPAddress = U.AssignedIP -- Ã‡alÄ±ÅŸanÄ± bulmak iÃ§in Kaynak IPye bakÃ½yoruz
+WHERE T.DestinationIPAddress = '157.240.1.1' -- Hedef IP 
+
 GROUP BY U.FirstName, U.LastName, U.Department, T.DestinationIPAddress;
