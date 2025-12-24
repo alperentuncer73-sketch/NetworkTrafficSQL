@@ -1,9 +1,9 @@
-﻿-- HAFTA 7: View Oluşturma
+﻿-- HAFTA 7: View Oluşturma --
 
 USE TrafficLogDB;
 GO
 
--- Gunluk trafik ozeti
+-- Günlük trafik özeti--
 DROP VIEW IF EXISTS monitoring.GunlukTrafikOzet;
 GO
 
@@ -13,7 +13,7 @@ FROM monitoring.traffic_logs
 GROUP BY CAST(log_time AS DATE);
 GO
 
--- Cihaz trafik ozeti
+-- Cihaz trafik özeti --
 DROP VIEW IF EXISTS monitoring.CihazTrafikOzet;
 GO
 
@@ -23,7 +23,7 @@ FROM monitoring.traffic_logs
 GROUP BY device_id;
 GO
 
--- Protokol trafik ozeti
+-- Protokol trafik özeti --
 DROP VIEW IF EXISTS monitoring.ProtokolTrafikOzet;
 GO
 
@@ -33,9 +33,10 @@ FROM monitoring.traffic_logs
 GROUP BY protocol;
 GO
 
--- Test
 SELECT * FROM monitoring.GunlukTrafikOzet;
 SELECT * FROM monitoring.CihazTrafikOzet;
 SELECT * FROM monitoring.ProtokolTrafikOzet;
+
 PRINT 'Hafta 7 tamamlandı.';
 GO
+
