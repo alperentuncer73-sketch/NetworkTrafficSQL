@@ -1,14 +1,14 @@
-﻿-- HAFTA 9: Toplu Veri Yükleme ve Hata Testi
+﻿-- HAFTA 9: Toplu Veri Yükleme ve Hata Testi --
 
 USE TrafficLogDB;
 GO
 
--- Port numarasi checkleme
+-- Port numarasi checkleme --
 ALTER TABLE monitoring.traffic_logs
 ADD CONSTRAINT CK_PortNumber CHECK (port_no BETWEEN 0 AND 65535);
 GO
 
--- Toplu veri importu (50 tane)
+-- Toplu veri importu (50 tane) --
 DECLARE @i INT = 1;
 WHILE @i <= 50
 BEGIN
@@ -26,9 +26,10 @@ BEGIN
 END
 GO
 
--- Kontrol
+-- Son Kontrol --
 SELECT COUNT(*) AS toplam_kayit FROM monitoring.traffic_logs;
 SELECT DISTINCT protocol FROM monitoring.traffic_logs;
 SELECT * FROM monitoring.traffic_logs WHERE data_size < 0;
 PRINT 'Hafta 9 tamamlandı.';
 GO
+
